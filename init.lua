@@ -1,4 +1,4 @@
---[[
+ --[[
 
 =====================================================================
 ==================== READ THIS BEFORE CONTINUING ====================
@@ -111,6 +111,12 @@ require('lazy').setup({
       -- Adds a number of user-friendly snippets
       'rafamadriz/friendly-snippets',
     },
+  },
+  {
+    'numToStr/Comment.nvim',
+    config = function()
+        require('Comment').setup()
+    end
   },
 
   -- Useful plugin to show you pending keybinds.
