@@ -78,6 +78,9 @@ require('lazy').setup({
   -- undotree
     'mbbill/undotree',
 
+   -- toggleterm 
+   {'akinsho/toggleterm.nvim', version = "*", config = true},
+
   -- NOTE: This is where your plugins related to LSP can be installed.
   --  The configuration is done below. Search for lspconfig to find it below.
   {
@@ -274,7 +277,7 @@ vim.opt.wrap = false
 
 vim.opt.swapfile = false
 vim.opt.backup = false
-vim.opt.undodir = os.getenv("HOME") .. "/.vim/undodir"
+-- vim.opt.undodir = os.getenv("HOME") .. "/.vim/undodir"
 vim.opt.hlsearch = false
 vim.opt.incsearch = true
 
@@ -328,6 +331,7 @@ vim.keymap.set("n","<C-e>", ui.toggle_quick_menu)
 -- vim.keymap.set("n", "<C-3>", function() ui.nav_file(3) end)
 -- vim.keymap.set("n", "<C-4>", function() ui.nav_file(4) end)
 
+
 -- telescope remapping
 local builtin = require('telescope.builtin')
 vim.keymap.set('n', '<leader>pf', builtin.find_files, {})
@@ -337,6 +341,44 @@ vim.keymap.set('n', '<leader>ps', function()
 end)
 
 
+ -- floatterm remapping
+require("toggleterm").setup {
+  size = 10,
+  open_mapping = [[<m-0>]],
+  hide_numbers = true,
+  shade_filetypes = {},
+  shade_terminals = true,
+  shading_factor = 2,
+  start_in_insert = true,
+  insert_mappings = true,
+  persist_size = true,
+  direction = "float",
+  close_on_exit = true,
+  shell = vim.o.shell,
+  float_opts = {
+    border = "curved",
+    winblend = 0,
+    highlights = {
+      border = "Normal",
+      background = "Normal",
+    },
+  },
+}
+--vim.keymap.set('n', '<f7>', ':ToggleTerm size=20 start_in_insert=true direction=float<CR> ')
+vim.keymap.set('n', '<f7>', ':ToggleTerm<CR>')
+function _G.set_terminal_keymaps()
+  local opts = {buffer = 0}
+  vim.keymap.set('t', '<esc>', [[<C-\><C-n>]], opts)
+  vim.keymap.set('t', 'jk', [[<C-\><C-n>]], opts)
+  vim.keymap.set('t', '<C-h>', [[<Cmd>wincmd h<CR>]], opts)
+  vim.keymap.set('t', '<C-j>', [[<Cmd>wincmd j<CR>]], opts)
+  vim.keymap.set('t', '<C-k>', [[<Cmd>wincmd k<CR>]], opts)
+  vim.keymap.set('t', '<C-l>', [[<Cmd>wincmd l<CR>]], opts)
+  vim.keymap.set('t', '<C-w>', [[<C-\><C-n><C-w>]], opts)
+end
+
+-- if you only want these mappings for toggle term use term://*toggleterm#* instead
+vim.cmd('autocmd! TermOpen term://* lua set_terminal_keymaps()')
 
 -- [[ Highlight on yank ]]
 -- See `:help vim.highlight.on_yank()`
